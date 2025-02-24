@@ -1,0 +1,54 @@
+<form id="formHitung">
+    <label for="hargaBarang">Harga Barang:</label>
+    <input type="text" id="hargaBarang" required>
+    <br><br>
+
+    <label for="jumlahBeli">Jumlah Beli:</label>
+    <input type="text" id="jumlahBeli" required>
+    <br><br>
+
+    <button type="submit">Hitung Total</button>
+</form>
+
+<p id="hasil"></p>
+
+<script>
+    document.getElementById("hargaBarang").addEventListener("input", function () {
+        let value = this.value.trim();
+        if (!/^\d+$/.test(value)) {
+            this.setCustomValidity("Harga barang harus berupa angka!");
+        } else if (parseInt(value) < 1) {
+            this.setCustomValidity("Harga barang tidak boleh kurang dari 1!");
+        } else {
+            this.setCustomValidity(""); // Reset error jika input valid
+        }
+    });
+
+    document.getElementById("jumlahBeli").addEventListener("input", function () {
+        let value = this.value.trim();
+        if (!/^\d+$/.test(value)) {
+            this.setCustomValidity("Jumlah beli harus berupa angka!");
+        } else if (parseInt(value) < 1) {
+            this.setCustomValidity("Jumlah beli harus lebih dari 0!");
+        } else {
+            this.setCustomValidity("");
+        }
+    });
+
+    document.getElementById("formHitung").addEventListener("submit", function (event) {
+        let hargaBarang = document.getElementById("hargaBarang");
+        let jumlahBeli = document.getElementById("jumlahBeli");
+
+        if (!hargaBarang.checkValidity() || !jumlahBeli.checkValidity()) {
+            event.preventDefault(); // Mencegah form terkirim jika ada error
+        } else {
+            let totalHarga = parseInt(hargaBarang.value) * parseInt(jumlahBeli.value);
+            document.getElementById("hasil").innerHTML = `
+            <strong>Harga Barang:</strong> ${hargaBarang.value} <br>
+            <strong>Jumlah Beli:</strong> ${jumlahBeli.value} <br>
+            <strong>Total Bayar:</strong> ${totalHarga}
+        `;
+            event.preventDefault(); // Mencegah reload halaman setelah submit
+        }
+    });
+</script>
